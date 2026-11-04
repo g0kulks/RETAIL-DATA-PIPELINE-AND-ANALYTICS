@@ -1,0 +1,97 @@
+
+WITH landing AS (
+    SELECT
+        SOURCE_ROW_ID,
+        QUANTITY,
+        UNIT_PRICE,
+        QUANTITY * UNIT_PRICE AS LINE_VALUE
+    FROM RETAIL_DB.LANDING.RETAIL_INGESTION
+),
+
+fact AS (
+    SELECT
+        SOURCE_ROW_ID,
+        QUANTITY,
+        UNIT_PRICE,
+        QUANTITY * UNIT_PRICE AS LINE_VALUE
+    FROM {{ ref('fact_sale_incremental') }}
+),
+
+landing_duplicates AS (
+    SELECT SOURCE_ROW_ID
+    FROM landing
+    GROUP BY SOURCE_ROW_ID
+    HAVING COUNT(*) > 1
+),
+
+fact_duplicates AS (
+    SELECT SOURCE_ROW_ID
+    FROM fact
+    GROUP BY SOURCE_ROW_ID
+    HAVING COUNT(*) > 1
+),
+
+reconciliation AS (
+    SELECT
+        COALESCE(l.SOURCE_ROW_ID, f.SOURCE_ROW_ID)
+            AS SOURCE_ROW_ID,
+        l.QUANTITY AS LANDING_QUANTITY,
+        f.QUANTITY AS FACT_QUANTITY,
+        l.UNIT_PRICE AS LANDING_PRICE,
+        f.UNIT_PRICE AS FACT_PRICE,
+        l.LINE_VALUE AS LANDING_VALUE,
+        f.LINE_VALUE AS FACT_VALUE,
+
+        CASE
+            WHEN l.SOURCE_ROW_ID IS NULL
+                THEN 'EXTRA_IN_FACT'
+            WHEN f.SOURCE_ROW_ID IS NULL
+                THEN 'MISSING_IN_FACT'
+            WHEN l.QUANTITY IS DISTINCT FROM f.QUANTITY
+                THEN 'QUANTITY_MISMATCH'
+            WHEN l.UNIT_PRICE IS DISTINCT FROM f.UNIT_PRICE
+                THEN 'PRICE_MISMATCH'
+            WHEN l.LINE_VALUE IS DISTINCT FROM f.LINE_VALUE
+                THEN 'VALUE_MISMATCH'
+        END AS ISSUE_TYPE
+
+    FROM landing l
+    FULL OUTER JOIN fact f
+        ON l.SOURCE_ROW_ID = f.SOURCE_ROW_ID
+)
+
+SELECT
+    SOURCE_ROW_ID,
+    ISSUE_TYPE
+FROM reconciliation
+WHERE ISSUE_TYPE IS NOT NULL
+
+UNION ALL
+
+SELECT
+    SOURCE_ROW_ID,
+    'DUPLICATE_IN_LANDING' AS ISSUE_TYPE
+FROM landing_duplicates
+
+UNION ALL
+
+SELECT
+    SOURCE_ROW_ID,
+    'DUPLICATE_IN_FACT' AS ISSUE_TYPE
+FROM fact_duplicates
+
+UNION ALL
+
+SELECT
+    SOURCE_ROW_ID,
+    'NULL_ID_IN_LANDING' AS ISSUE_TYPE
+FROM landing
+WHERE SOURCE_ROW_ID IS NULL
+
+UNION ALL
+
+SELECT
+    SOURCE_ROW_ID,
+    'NULL_ID_IN_FACT' AS ISSUE_TYPE
+FROM fact
+WHERE SOURCE_ROW_ID IS NULL

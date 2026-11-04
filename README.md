@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/34355939/README.md)
 # Retail Analytics Engineering Platform
 
 **End-to-end retail data engineering and business intelligence using Azure, Snowflake, dbt, and Power BI.**
@@ -19,7 +18,7 @@ An engineering-focused portfolio project that transforms historical retail trans
 - [Prerequisites](#prerequisites)
 - [How to Run This Project](#how-to-run-this-project)
 - [Lessons Learned](#lessons-learned)
-- [Contact](#contact)
+
 
 ---
 
@@ -50,10 +49,6 @@ The Power BI report contains two pages.
 - Monthly revenue and month-over-month growth
 - UK vs. international revenue and revenue share by country
 - Average order value by country and weekday revenue patterns
-
-<!-- TODO: Export the finished Power BI page into docs/images/ and uncomment the line below.
-![Retail Sales Overview](docs/images/retail-sales-overview.png)
--->
 
 ### Page 2 — Customer & Product Intelligence
 

@@ -1,0 +1,33 @@
+
+version: 2
+
+models:
+  - name: fact_sale_incremental
+    description: >
+      Incremental fact table for online retail transactions.
+      Uses SOURCE_ROW_ID to identify individual source records.
+
+    columns:
+      - name: SOURCE_ROW_ID
+        description: >
+          Unique identifier derived from the source
+          filename and row number.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: INVOICE_KEY
+        data_tests:
+          - not_null
+
+      - name: PRODUCT_KEY
+        data_tests:
+          - not_null
+
+      - name: DATE_KEY
+        data_tests:
+          - not_null
+
+      - name: COUNTRY_KEY
+        data_tests:
+          - not_null

@@ -1,0 +1,19 @@
+
+version: 2
+
+models:
+  - name: dim_country
+    description: "Country dimension for online retail analytics"
+
+    columns:
+      - name: country_key
+        description: "MD5 surrogate key generated from the country name"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: country
+        description: "Country associated with retail transactions"
+        data_tests:
+          - unique
+          - not_null

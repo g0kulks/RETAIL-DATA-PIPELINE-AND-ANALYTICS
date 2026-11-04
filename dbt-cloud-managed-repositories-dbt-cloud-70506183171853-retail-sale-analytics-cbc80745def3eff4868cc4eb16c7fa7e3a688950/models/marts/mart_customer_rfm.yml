@@ -1,0 +1,83 @@
+
+version: 2
+
+models:
+  - name: mart_customer_rfm
+    description: >
+      Customer RFM segmentation mart.
+      Calculates recency, frequency and monetary value
+      using valid positive purchase transactions.
+      Excludes missing customer IDs, cancellation invoices,
+      non-positive quantities and non-positive unit prices.
+      Grain is one row per customer.
+
+    columns:
+      - name: CUSTOMER_ID
+        description: Unique customer identifier.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: RECENCY_DAYS
+        description: >
+          Days since the customer's most recent valid purchase,
+          measured against the maximum invoice date.
+        data_tests:
+          - not_null
+
+      - name: FREQUENCY
+        description: Number of distinct valid purchase invoices.
+        data_tests:
+          - not_null
+
+      - name: MONETARY_VALUE
+        description: Total positive purchase revenue.
+        data_tests:
+          - not_null
+
+      - name: R_SCORE
+        description: Recency score from 1 to 5.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+                quote: false
+
+      - name: F_SCORE
+        description: Frequency score from 1 to 5.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+                quote: false
+
+      - name: M_SCORE
+        description: Monetary score from 1 to 5.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: [1, 2, 3, 4, 5]
+                quote: false
+
+      - name: RFM_SCORE
+        description: >
+          Three-digit concatenation of R, F and M scores.
+        data_tests:
+          - not_null
+
+      - name: CUSTOMER_SEGMENT
+        description: >
+          Customer segment derived from RFM scoring rules.
+        data_tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values:
+                  - Champions
+                  - Loyal Customers
+                  - At Risk
+                  - Recent Customers
+                  - Other Customers

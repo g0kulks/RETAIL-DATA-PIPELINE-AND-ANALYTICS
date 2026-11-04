@@ -1,0 +1,29 @@
+
+version: 2
+
+models:
+  - name: dim_date
+    description: "Date dimension for online retail analytics"
+
+    columns:
+      - name: date_key
+        description: "MD5 surrogate key generated from the calendar date"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: date
+        description: "Parsed calendar date"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: month
+        description: "Calendar month number from 1 to 12"
+        data_tests:
+          - not_null
+
+      - name: year
+        description: "Calendar year"
+        data_tests:
+          - not_null

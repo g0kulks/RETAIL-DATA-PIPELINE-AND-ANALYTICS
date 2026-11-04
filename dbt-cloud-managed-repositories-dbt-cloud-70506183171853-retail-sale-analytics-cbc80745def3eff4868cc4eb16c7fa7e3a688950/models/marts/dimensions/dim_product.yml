@@ -1,0 +1,22 @@
+
+version: 2
+
+models:
+  - name: dim_product
+    description: "Product dimension table for online retail analytics"
+
+    columns:
+      - name: stockcode
+        description: "Original stock code identifying the product"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: description
+        description: "Description of the product"
+
+      - name: productkey
+        description: "Generated surrogate key for each product"
+        data_tests:
+          - unique
+          - not_null
