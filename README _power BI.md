@@ -41,7 +41,7 @@ The sales page brings together:
 - **Average Revenue per Trading Day by Weekday:** Comparison of daily averages rather than only total weekday volume.
 
 
-retail_sales_overview
+<img width="1202" height="686" alt="Screenshot 2026-11-04 201926" src="https://github.com/user-attachments/assets/f297ca32-ae04-4d0e-b69c-4174082b0f0b" />
 
 ### Page 2 — Customer & Product Intelligence
 
@@ -53,16 +53,8 @@ This page focuses on customer behaviour and product performance:
 - **Product Cancellation Analysis:** Unit cancellation rates, with dashboard-level eligibility filters for comparable products.
 
 
-customer_product_intelligence
+<img width="1202" height="681" alt="Screenshot 2026-11-04 201949" src="https://github.com/user-attachments/assets/6bd2ca65-b0a2-4ed1-894b-4d89c958c05c" />
 
-```text
-powerbi/
-├── README.md
-├── measures.md
-└── screenshots/
-    ├── retail_sales_overview.png
-    └── customer_product_intelligence.png
-```
 
 
 ## Data Model and Snowflake Inputs
