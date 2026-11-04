@@ -179,13 +179,6 @@ The following steps cover the available dbt transformation code and describe the
 - **Reporting interactions:** Some standalone analytics marts are intentionally disconnected from the central Power BI model, so slicer behaviour needs to be documented and tested.
 - **Reproducibility:** Export ingestion scripts, environment setup instructions, job configuration evidence, and report assets so another engineer can run the full solution independently.
 
-## Contact
-
-**Portfolio author:** Gokul K S
-
-- **LinkedIn:** _Add your public LinkedIn profile URL_
-- **GitHub:** _Add your GitHub profile or repository URL_
-
 Feedback, technical questions, and collaboration opportunities are welcome.
 
 ---
