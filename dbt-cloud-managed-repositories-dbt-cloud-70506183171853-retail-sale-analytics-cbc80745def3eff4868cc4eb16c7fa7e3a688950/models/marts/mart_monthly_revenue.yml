@@ -1,0 +1,74 @@
+
+version: 2
+
+models:
+  - name: mart_monthly_revenue
+    description: >
+      Monthly retail revenue analytics mart.
+      Aggregates transaction-level financial values into
+      monthly net revenue and calculates month-over-month
+      revenue growth.
+
+      Net revenue includes positive sales, cancellation
+      transactions, and other signed financial adjustments.
+
+      Month-over-month growth is calculated using the
+      previous month's net revenue as the comparison base.
+
+      Growth is intentionally NULL for the first available
+      month, January 2011, and December 2011 because
+      the dataset contains incomplete December periods.
+
+      Grain is one row per revenue month.
+
+    columns:
+      - name: REVENUE_MONTH
+        description: >
+          First calendar day of the month for which
+          revenue is aggregated.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: TRANSACTION_ROWS
+        description: >
+          Total number of transaction rows recorded
+          during the revenue month, including sales,
+          cancellations and adjustment transactions.
+        data_tests:
+          - not_null
+
+      - name: NET_REVENUE
+        description: >
+          Total signed monthly revenue calculated as
+          the sum of quantity multiplied by unit price.
+          Includes positive and negative transaction values.
+          Rounded to two decimal places.
+        data_tests:
+          - not_null
+
+      - name: PREVIOUS_MONTH_REVENUE
+        description: >
+          Net revenue of the preceding available month,
+          calculated using the LAG window function.
+
+          NULL for the first month in the dataset.
+          Values remain populated for January 2011
+          and December 2011 even though their
+          growth percentages are excluded.
+
+      - name: MOM_GROWTH_PCT
+        description: >
+          Month-over-month revenue growth percentage.
+
+          Calculated as current month revenue minus
+          previous month revenue, divided by the
+          absolute value of previous month revenue,
+          multiplied by 100.
+
+          NULL when the previous month is unavailable
+          or zero, and intentionally NULL for
+          January 2011 and December 2011.
+
+          Stored as a numeric percentage where
+          49.37 represents 49.37 percent.

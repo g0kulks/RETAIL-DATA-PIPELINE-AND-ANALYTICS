@@ -1,0 +1,81 @@
+
+version: 2
+
+models:
+  - name: mart_product_cancellation
+    description: >
+      Product-level cancellation analysis mart.
+
+      Aggregates valid sales quantities and cancellation
+      transactions from the incremental sales fact table.
+
+      Product codes are standardized using UPPER and TRIM.
+
+      Sold units are calculated from positive quantities
+      with positive unit prices on non-cancellation invoices.
+
+      Cancelled units are calculated from negative quantities
+      on invoices beginning with C.
+
+      Cancellation value represents the absolute financial
+      value of cancellation transactions.
+
+      Cancellation rate is calculated as cancelled units
+      divided by sold units, multiplied by 100.
+
+      Products with zero sold units have NULL cancellation
+      rates. Rates may exceed 100 percent where recorded
+      cancellations exceed valid sales quantities.
+
+      Grain is one row per normalized product code.
+
+    columns:
+      - name: PRODUCT_CODE
+        description: >
+          Normalized product identifier derived from
+          STOCKCODE using UPPER and TRIM.
+          Primary business key for this mart.
+        data_tests:
+          - not_null
+          - unique
+
+      - name: SOLD_UNITS
+        description: >
+          Total units sold through valid positive-quantity,
+          positive-price, non-cancellation transactions.
+        data_tests:
+          - not_null
+
+      - name: CANCELLED_UNITS
+        description: >
+          Total absolute units recorded on cancellation
+          invoices with negative quantities.
+        data_tests:
+          - not_null
+
+      - name: CANCELLATION_VALUE
+        description: >
+          Total absolute monetary value of cancellation
+          transactions, rounded to two decimal places.
+        data_tests:
+          - not_null
+
+      - name: CANCELLATION_INVOICES
+        description: >
+          Number of distinct cancellation invoice numbers
+          associated with the product.
+        data_tests:
+          - not_null
+
+      - name: CANCELLATION_RATE_PCT
+        description: >
+          Percentage of cancelled units relative to sold units.
+
+          Calculated as cancelled units divided by sold units
+          multiplied by 100, rounded to two decimal places.
+
+          NULL when SOLD_UNITS equals zero.
+
+          Values above 100 percent are possible because
+          cancellations may relate to earlier transactions
+          or other adjustments outside the observed sales.

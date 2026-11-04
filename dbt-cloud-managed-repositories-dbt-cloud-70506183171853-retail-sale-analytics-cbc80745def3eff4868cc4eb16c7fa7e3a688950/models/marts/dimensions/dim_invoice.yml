@@ -1,0 +1,19 @@
+
+version: 2
+
+models:
+  - name: dim_invoice
+    description: "Invoice dimension containing unique invoice numbers and generated invoice keys"
+
+    columns:
+      - name: invoice_key
+        description: "Generated MD5 key for each unique invoice number"
+        data_tests:
+          - unique
+          - not_null
+
+      - name: invoiceno
+        description: "Unique invoice number from the retail transaction data"
+        data_tests:
+          - unique
+          - not_null

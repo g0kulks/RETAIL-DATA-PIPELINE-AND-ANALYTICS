@@ -1,0 +1,63 @@
+
+version: 2
+
+models:
+  - name: mart_customer_cohorts
+    description: >
+      Customer cohort retention mart that groups customers
+      by their first valid purchase month and tracks their
+      purchasing activity in subsequent months.
+
+      Only transactions with valid customer IDs, positive
+      quantities, positive prices, and non-cancellation
+      invoice numbers are considered.
+
+      Grain: One row per cohort month and purchase month.
+
+    columns:
+      - name: COHORT_MONTH
+        description: >
+          Month of the customer's first valid purchase,
+          representing the customer acquisition cohort.
+        data_tests:
+          - not_null
+
+      - name: PURCHASE_MONTH
+        description: >
+          Calendar month in which customers belonging
+          to the cohort made valid purchases.
+        data_tests:
+          - not_null
+
+      - name: MONTH_NUMBER
+        description: >
+          Number of calendar months since the cohort's
+          first purchase month. Zero represents the
+          acquisition month.
+        data_tests:
+          - not_null
+
+      - name: COHORT_SIZE
+        description: >
+          Total number of distinct customers belonging
+          to the acquisition cohort.
+        data_tests:
+          - not_null
+
+      - name: ACTIVE_CUSTOMERS
+        description: >
+          Number of distinct customers from the cohort
+          who purchased during the activity month.
+        data_tests:
+          - not_null
+
+      - name: RETENTION_PCT
+        description: >
+          Customer retention percentage calculated as
+          active customers divided by cohort size
+          multiplied by 100.
+
+          Stored as a numeric percentage where 36.61
+          represents 36.61 percent.
+        data_tests:
+          - not_null

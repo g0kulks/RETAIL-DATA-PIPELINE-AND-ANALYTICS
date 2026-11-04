@@ -1,0 +1,51 @@
+version: 2
+
+models:
+  - name: fact_sales
+    description: "Fact table containing individual retail sales transaction lines, linked to invoice, customer, product, date, and country dimensions."
+
+    columns:
+      - name: invoice_key
+        description: "Foreign key linking to the invoice dimension."
+        data_tests:
+          - not_null
+
+      - name: customer_key
+        description: "Foreign key linking to the customer dimension. May be null for guest or unidentified customers."
+
+      - name: product_key
+        description: "Foreign key linking to the product dimension."
+        data_tests:
+          - not_null
+
+      - name: date_key
+        description: "Foreign key linking to the date dimension."
+        data_tests:
+          - not_null
+
+      - name: country_key
+        description: "Foreign key linking to the country dimension."
+        data_tests:
+          - not_null
+
+      - name: invoiceno
+        description: "Invoice number from the invoice dimension."
+        data_tests:
+          - not_null
+
+      - name: stockcode
+        description: "Product stock code from the product dimension."
+        data_tests:
+          - not_null
+
+      - name: customer_id
+        description: "Original customer identifier from the landing table."
+
+      - name: invoice_date
+        description: "Date of the invoice parsed from the source invoice timestamp."
+
+      - name: quantity
+        description: "Quantity of products on the transaction line."
+
+      - name: unit_price
+        description: "Unit price of the product for the transaction line."
