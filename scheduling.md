@@ -156,4 +156,4 @@ For detailed testing expectations, see [`../docs/data_quality.md`](../docs/data_
 
 ## Deployment notes
 
-The GitHub repository is intended to explain the project, not to expose production configuration. The exported dbt project alone does not include full Snowflake scheduling configuration, cloud secrets, or Power BI Service settings. Add sanitized object definitions and screenshots only after reviewing them for sensitive information.
+The GitHub repository is intended to explain the project, not to expose production configuration. The exported dbt project alone does not include full Snowflake scheduling configuration, cloud secrets, or Power BI Service settings. 
