@@ -1,4 +1,3 @@
-[README.md](https://github.com/user-attachments/files/34355939/README.md)
 # Retail Analytics Engineering Platform
 
 **End-to-end retail data engineering and business intelligence using Azure, Snowflake, dbt, and Power BI.**
